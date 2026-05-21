@@ -20,7 +20,7 @@
             <h2>选择角色并登录</h2>
             <div class="role-select-grid section">
                 <label class="role-option">
-                    <input type="radio" name="role" value="student" checked>
+                    <input type="radio" name="role" value="student">
                     <strong>学生后台</strong>
                     <span>学习资源、收藏下载、题库和资源池互动</span>
                 </label>
@@ -30,7 +30,7 @@
                     <span>资源发布、公告发布、题目维护和反馈查看</span>
                 </label>
                 <label class="role-option">
-                    <input type="radio" name="role" value="admin">
+                    <input type="radio" name="role" value="admin" checked>
                     <strong>管理员后台</strong>
                     <span>用户维护、资源审核、公告管理和数据备份</span>
                 </label>
