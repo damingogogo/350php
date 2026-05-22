@@ -12,7 +12,7 @@
             <span class="badge gold">面向：{{ $announcement->target_role === 'all' ? '全部师生' : ($announcement->target_role === 'student' ? '学生' : '教师') }}</span>
         </div>
         <h1 class="section">公告详情：{{ $announcement->title }}</h1>
-        <p class="small muted">发布人：{{ optional($announcement->publisher)->nickname ?: '系统' }} · 发布时间：{{ $announcement->created_at }}</p>
+        <p class="small muted">发布人：{{ $announcement->publisher_role === 'admin' ? '管理员' : (optional($announcement->publisher)->nickname ?: optional($announcement->publisher)->username ?: '教师') }} · 发布时间：{{ $announcement->created_at }}</p>
 
         <section class="section">
             <h2>公告内容</h2>

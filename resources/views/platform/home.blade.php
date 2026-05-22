@@ -1,13 +1,13 @@
 @extends('platform.layout')
 
-@section('title', '基于php的学联界高校教学资源共享')
+@section('title', '学联界高校教学资源共享平台')
 
 @section('hero')
 @guest
 <section class="hero login-hero">
     <div class="hero-inner">
         <div class="login-copy">
-            <h1>基于php的学联界高校教学资源共享</h1>
+            <h1>学联界高校教学资源共享平台</h1>
             <p class="lead">覆盖课堂预习课件、历年题目、音视频资料、文档模板和教师团队资源池，支持教师间共享、本班共享和全平台共享。</p>
         </div>
         <div class="panel auth-panel">

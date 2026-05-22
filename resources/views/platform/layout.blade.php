@@ -256,6 +256,42 @@
         }
         .question-body, .post-body { white-space: pre-wrap; color: var(--ink); }
         .pagination { margin-top: 18px; }
+        .pagination-simple {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        .pagination-simple .page-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 7px 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: #fff;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+        .pagination-simple .page-btn.disabled {
+            color: var(--muted);
+            background: #f8fafc;
+        }
+        .list-row > .badge,
+        .announcement-type-pill {
+            align-self: center;
+            justify-self: end;
+            min-width: 78px;
+            min-height: 58px;
+            padding: 8px 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            white-space: normal;
+        }
         .backend-shell {
             display: grid;
             grid-template-columns: 228px minmax(0, 1fr);
@@ -292,6 +328,20 @@
             font-size: 14px;
         }
         .backend-menu a:hover, .backend-menu a.active {
+            background: #263a5f;
+            color: #fff;
+        }
+        .backend-return {
+            display: block;
+            margin-top: 16px;
+            padding: 10px 12px;
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 6px;
+            color: #dbeafe;
+            font-weight: 700;
+            text-align: center;
+        }
+        .backend-return:hover {
             background: #263a5f;
             color: #fff;
         }
@@ -409,11 +459,13 @@
                     <a class="{{ request()->routeIs('platform.boards*') || request()->routeIs('platform.posts*') ? 'active' : '' }}" href="{{ route('platform.boards') }}">共享资源池</a>
                     <a class="{{ request()->routeIs('platform.announcements*') ? 'active' : '' }}" href="{{ route('platform.announcements') }}">公告中心</a>
                     <a class="{{ request()->routeIs('platform.backend*') ? 'active' : '' }}" href="{{ route('platform.backend') }}">角色后台</a>
-                    <a href="{{ route('platform.dashboard') }}#profile">个人中心</a>
+                    <a class="{{ request()->routeIs('platform.profile') ? 'active' : '' }}" href="{{ route('platform.profile') }}">个人中心</a>
                 @endauth
             </div>
             @auth
-                <span class="user-chip">{{ auth()->user()->nickname ?: auth()->user()->username }} · {{ auth()->user()->role }}</span>
+                @php($roleName = ['admin' => '管理员', 'teacher' => '教师', 'student' => '学生'][auth()->user()->role] ?? auth()->user()->role)
+                @php($displayName = auth()->user()->isAdmin() ? '管理员' : (auth()->user()->nickname ?: auth()->user()->username))
+                <span class="user-chip">{{ $displayName }} · {{ $roleName }}</span>
                 <form method="post" action="{{ route('platform.logout') }}">
                     @csrf
                     <button class="link-button" type="submit">退出</button>

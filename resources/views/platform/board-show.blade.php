@@ -43,6 +43,6 @@
             <p class="muted">暂无帖子</p>
         @endforelse
     </div>
-    <div class="pagination">{{ $posts->links() }}</div>
+    @include('platform.partials.simple-pagination', ['paginator' => $posts])
 </section>
 @endsection

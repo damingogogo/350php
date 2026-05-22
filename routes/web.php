@@ -16,8 +16,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [PlatformController::class, 'dashboard'])->name('platform.dashboard');
     Route::get('/backend', [PlatformController::class, 'roleBackend'])->name('platform.backend');
     Route::get('/student/backend', [PlatformController::class, 'studentBackend'])->name('platform.backend.student');
+    Route::get('/student/backend/{section}', [PlatformController::class, 'studentBackend'])->name('platform.backend.student.section');
     Route::get('/teacher/backend', [PlatformController::class, 'teacherBackend'])->name('platform.backend.teacher');
+    Route::get('/teacher/backend/{section}', [PlatformController::class, 'teacherBackend'])->name('platform.backend.teacher.section');
     Route::get('/admin/backend', [PlatformController::class, 'adminBackend'])->name('platform.backend.admin');
+    Route::get('/admin/backend/{section}', [PlatformController::class, 'adminBackend'])->name('platform.backend.admin.section');
+    Route::get('/profile', [PlatformController::class, 'profile'])->name('platform.profile');
     Route::get('/resources', [PlatformController::class, 'resources'])->name('platform.resources');
     Route::get('/resources/{resource}', [PlatformController::class, 'showResource'])->name('platform.resources.show');
     Route::get('/questions', [PlatformController::class, 'questions'])->name('platform.questions');
@@ -28,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/announcements', [PlatformController::class, 'announcements'])->name('platform.announcements');
     Route::get('/announcements/{announcement}', [PlatformController::class, 'showAnnouncement'])->name('platform.announcements.show');
     Route::post('/profile', [PlatformController::class, 'updateProfile'])->name('platform.profile.update');
+    Route::post('/homework-submissions', [PlatformController::class, 'storeHomeworkSubmission'])->name('platform.homework.store');
 
     Route::post('/resources', [PlatformController::class, 'storeResource'])->name('platform.resources.store');
     Route::put('/resources/{resource}', [PlatformController::class, 'updateResource'])->name('platform.resources.update');

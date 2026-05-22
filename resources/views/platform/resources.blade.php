@@ -29,6 +29,15 @@
             </select>
         </div>
         <div class="field">
+            <label>可看资源分类</label>
+            <select name="share_scope">
+                <option value="">全部可见资源</option>
+                @foreach($shareScopeFilterOptions as $value => $label)
+                    <option value="{{ $value }}" @selected(($filters['share_scope'] ?? '') === $value)>{{ $label }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="field">
             <label>上传教师</label>
             <select name="teacher_id">
                 <option value="">全部教师</option>
@@ -77,5 +86,5 @@
     @endforelse
 </section>
 
-<div class="pagination">{{ $resources->links() }}</div>
+@include('platform.partials.simple-pagination', ['paginator' => $resources])
 @endsection

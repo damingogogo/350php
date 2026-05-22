@@ -10,6 +10,7 @@ use App\Models\ExamQuestion;
 use App\Models\Favorite;
 use App\Models\ForumBoard;
 use App\Models\ForumPost;
+use App\Models\HomeworkSubmission;
 use App\Models\Rating;
 use App\Models\Resource;
 use App\Models\User;
@@ -82,6 +83,10 @@ class PlatformController extends Controller
             $query->where('file_type', $request->string('file_type'));
         }
 
+        if ($request->filled('share_scope')) {
+            $query->where('share_scope', $request->string('share_scope'));
+        }
+
         if ($request->filled('type')) {
             $query->where('type', $request->string('type'));
         }
@@ -99,6 +104,11 @@ class PlatformController extends Controller
             'categories' => Category::orderBy('sort')->get(),
             'teachers' => User::where('role', 'teacher')->orderBy('nickname')->get(),
             'fileTypeOptions' => Resource::FILE_TYPE_OPTIONS,
+            'shareScopeFilterOptions' => [
+                'class' => '本班学生可看',
+                'platform' => '全部学生可看',
+                'teachers' => '教师可看',
+            ],
             'filters' => $request->all(),
         ]);
     }
@@ -311,17 +321,24 @@ class PlatformController extends Controller
         return redirect()->route('platform.backend.student');
     }
 
-    public function studentBackend()
+    public function profile()
+    {
+        return view('platform.profile');
+    }
+
+    public function studentBackend(?string $section = null)
     {
         if ($response = $this->backendGuard(['student'])) {
             return $response;
         }
 
         $user = Auth::user();
+        $section = $section ?: 'overview';
 
         $resources = $this->visibleResources($user);
 
         return view('platform.backend-student', [
+            'backendSection' => $section,
             'resources' => (clone $resources)->latest()->take(8)->get(),
             'favorites' => Favorite::with(['resource.user', 'resource.category'])
                 ->where('user_id', $user->id)
@@ -339,6 +356,10 @@ class PlatformController extends Controller
                 ->latest()
                 ->take(8)
                 ->get(),
+            'homeworkSubmissions' => HomeworkSubmission::where('user_id', $user->id)
+                ->latest()
+                ->take(12)
+                ->get(),
             'announcements' => $this->visibleAnnouncements($user)->latest()->take(6)->get(),
             'questions' => ExamQuestion::with('teacher')->latest()->take(6)->get(),
             'boards' => ForumBoard::withCount('posts')->orderBy('sort')->get(),
@@ -347,21 +368,24 @@ class PlatformController extends Controller
                 'favorites' => Favorite::where('user_id', $user->id)->count(),
                 'downloads' => Download::where('user_id', $user->id)->count(),
                 'questions' => ExamQuestion::count(),
+                'homework' => HomeworkSubmission::where('user_id', $user->id)->count(),
             ],
         ]);
     }
 
-    public function teacherBackend()
+    public function teacherBackend(?string $section = null)
     {
         if ($response = $this->backendGuard(['teacher'])) {
             return $response;
         }
 
         $user = Auth::user();
+        $section = $section ?: 'overview';
 
         $myResourceIds = Resource::where('user_id', $user->id)->pluck('id');
 
         return view('platform.backend-teacher', [
+            'backendSection' => $section,
             'myResources' => Resource::with('category')->where('user_id', $user->id)->latest()->get(),
             'recentComments' => Comment::with(['user', 'resource'])
                 ->whereIn('resource_id', $myResourceIds)
@@ -384,6 +408,10 @@ class PlatformController extends Controller
                 ->latest()
                 ->take(12)
                 ->get(),
+            'homeworkSubmissions' => HomeworkSubmission::with('user')
+                ->latest()
+                ->take(12)
+                ->get(),
             'boards' => ForumBoard::withCount('posts')->orderBy('sort')->get(),
             'categories' => Category::orderBy('sort')->get(),
             'fileTypeOptions' => Resource::FILE_TYPE_OPTIONS,
@@ -397,21 +425,24 @@ class PlatformController extends Controller
         ]);
     }
 
-    public function adminBackend()
+    public function adminBackend(?string $section = null)
     {
         if ($response = $this->backendGuard(['admin'])) {
             return $response;
         }
 
         $user = Auth::user();
+        $section = $section ?: 'overview';
 
         return view('platform.backend-admin', [
+            'backendSection' => $section,
             'users' => User::latest()->take(20)->get(),
             'resources' => Resource::with(['user', 'category'])->latest()->take(18)->get(),
             'pendingResources' => Resource::with(['user', 'category'])->where('status', 'pending')->latest()->get(),
             'announcements' => Announcement::with('publisher')->latest()->take(8)->get(),
             'questions' => ExamQuestion::with('teacher')->latest()->take(10)->get(),
             'posts' => ForumPost::with(['board', 'user'])->whereNull('parent_id')->latest()->take(12)->get(),
+            'homeworkSubmissions' => HomeworkSubmission::with('user')->latest()->take(12)->get(),
             'categoryStats' => Category::withCount('resources')->whereNull('parent_id')->orderBy('sort')->get(),
             'categories' => Category::orderBy('sort')->get(),
             'boards' => ForumBoard::withCount('posts')->orderBy('sort')->get(),
@@ -478,6 +509,16 @@ class PlatformController extends Controller
 
         return view('platform.announcements', [
             'announcements' => $query->latest()->paginate(10)->withQueryString(),
+            'adminAnnouncements' => $this->visibleAnnouncements($user)
+                ->where('publisher_role', 'admin')
+                ->latest()
+                ->paginate(10, ['*'], 'admin_page')
+                ->withQueryString(),
+            'teacherAnnouncements' => $this->visibleAnnouncements($user)
+                ->where('publisher_role', 'teacher')
+                ->latest()
+                ->paginate(10, ['*'], 'teacher_page')
+                ->withQueryString(),
             'currentRole' => $request->get('role', 'all'),
             'adminCount' => $this->visibleAnnouncements($user)->where('publisher_role', 'admin')->count(),
             'teacherCount' => $this->visibleAnnouncements($user)->where('publisher_role', 'teacher')->count(),
@@ -555,6 +596,37 @@ class PlatformController extends Controller
         Auth::login($user);
 
         return redirect()->route('platform.dashboard')->with('success', '注册成功');
+    }
+
+    public function storeHomeworkSubmission(Request $request)
+    {
+        $user = Auth::user();
+        abort_unless($user && $user->isStudent(), 403);
+
+        $data = $request->validate([
+            'course_name' => 'nullable|string|max:100',
+            'assignment_title' => 'required|string|max:200',
+            'content' => 'nullable|string|max:3000',
+            'attachment' => 'nullable|file|max:204800',
+        ]);
+
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $data['attachment_path'] = $file->store('homework/' . date('Ym'), 'public');
+            $data['attachment_name'] = $file->getClientOriginalName();
+        }
+
+        unset($data['attachment']);
+
+        HomeworkSubmission::create([
+            ...$data,
+            'user_id' => $user->id,
+            'status' => 'submitted',
+        ]);
+
+        return redirect()
+            ->route('platform.backend.student.section', ['section' => 'assignments'])
+            ->with('success', '作业已提交');
     }
 
     public function storeResource(Request $request)

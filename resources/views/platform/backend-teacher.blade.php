@@ -3,21 +3,24 @@
 @section('title', '教师后台 - 学联界高校教学资源共享平台')
 
 @section('content')
+@php($backendSection = $backendSection ?? 'overview')
 <section class="backend-shell">
     <aside class="backend-sidebar">
         <h2>教师后台</h2>
         <p>资源发布、公告通知、题目维护、资源池互动集中处理。</p>
         <nav class="backend-menu">
-            <a class="active" href="{{ route('platform.backend.teacher') }}">教学概览 <span>01</span></a>
-            <a href="#publish-resource">发布资源 <span>02</span></a>
-            <a href="#teacher-notice">公告题库 <span>03</span></a>
-            <a href="#my-resources">我的资源 <span>04</span></a>
-            <a href="{{ route('platform.resources') }}">资源检索 <span>05</span></a>
-            <a href="{{ route('platform.boards') }}">共享资源池 <span>06</span></a>
+            <a class="{{ $backendSection === 'overview' ? 'active' : '' }}" href="{{ route('platform.backend.teacher') }}">教学概览 <span>01</span></a>
+            <a class="{{ $backendSection === 'publish' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'publish']) }}">发布资源 <span>02</span></a>
+            <a class="{{ $backendSection === 'announcements' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'announcements']) }}">公告题库 <span>03</span></a>
+            <a class="{{ $backendSection === 'resources' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'resources']) }}">我的资源 <span>04</span></a>
+            <a class="{{ $backendSection === 'posts' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'posts']) }}">共享资源池 <span>05</span></a>
+            <a class="{{ $backendSection === 'homework' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'homework']) }}">作业查看 <span>06</span></a>
         </nav>
+        <a class="backend-return" href="{{ route('platform.dashboard') }}">返回系统</a>
     </aside>
 
     <div class="backend-content">
+        @if($backendSection === 'overview')
         <section class="panel">
             <div class="badges">
                 <span class="badge green">教师</span>
@@ -34,7 +37,9 @@
             <div class="metric-card"><span class="muted">评论反馈</span><strong>{{ $stats['comments'] }}</strong><small>课堂互动沉淀</small></div>
             <div class="metric-card"><span class="muted">题目数量</span><strong>{{ $stats['questions'] }}</strong><small>真题、模拟与重点练习</small></div>
         </section>
+        @endif
 
+        @if($backendSection === 'publish')
         <section id="publish-resource" class="panel">
             <h2>发布教学资源</h2>
             <form method="post" action="{{ route('platform.resources.store') }}" enctype="multipart/form-data">
@@ -78,7 +83,9 @@
                 <button class="btn section" type="submit">发布资源</button>
             </form>
         </section>
+        @endif
 
+        @if($backendSection === 'announcements')
         <section id="teacher-notice" class="grid grid-2 crud-panel">
             <form class="panel" method="post" action="{{ route('platform.announcements.store') }}">
                 @csrf
@@ -167,7 +174,9 @@
                 </div>
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'posts')
         <section class="grid grid-2 crud-panel">
             <form class="panel" method="post" action="{{ route('platform.posts.store') }}" enctype="multipart/form-data">
                 @csrf
@@ -222,7 +231,39 @@
                 @endforelse
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'homework')
+        <section class="panel crud-panel">
+            <h2>学生作业提交记录</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>学生</th><th>作业</th><th>内容</th><th>附件</th><th>时间</th></tr></thead>
+                    <tbody>
+                    @forelse($homeworkSubmissions as $submission)
+                        <tr>
+                            <td>{{ optional($submission->user)->nickname ?: optional($submission->user)->username ?: '学生' }}</td>
+                            <td>{{ $submission->assignment_title }}<p class="small muted">{{ $submission->course_name ?: '未填写课程' }}</p></td>
+                            <td>{{ mb_strimwidth($submission->content ?: '未填写说明', 0, 100, '...') }}</td>
+                            <td>
+                                @if($submission->attachment_path)
+                                    <a class="text-link" href="{{ asset('storage/' . $submission->attachment_path) }}" target="_blank">{{ $submission->attachment_name ?: '查看附件' }}</a>
+                                @else
+                                    <span class="muted">无附件</span>
+                                @endif
+                            </td>
+                            <td>{{ $submission->created_at }}</td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5">暂无学生作业提交。</td></tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        @endif
+
+        @if($backendSection === 'resources')
         <section id="my-resources" class="panel crud-panel">
             <h2>我的资源 / 编辑删除</h2>
             <div class="table-wrap">
@@ -269,6 +310,7 @@
                 </table>
             </div>
         </section>
+        @endif
     </div>
 </section>
 @endsection

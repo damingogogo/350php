@@ -42,5 +42,5 @@
     @endforelse
 </section>
 
-<div class="pagination">{{ $questions->links() }}</div>
+@include('platform.partials.simple-pagination', ['paginator' => $questions])
 @endsection

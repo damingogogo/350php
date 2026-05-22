@@ -3,21 +3,24 @@
 @section('title', '系统平台管理员后台 - 学联界高校教学资源共享平台')
 
 @section('content')
+@php($backendSection = $backendSection ?? 'overview')
 <section class="backend-shell">
     <aside class="backend-sidebar">
         <h2 class="system-admin-label">系统平台管理员</h2>
         <p>负责用户、资源审核、公告、板块、备份和平台数据总览。</p>
         <nav class="backend-menu">
-            <a class="active" href="{{ route('platform.backend.admin') }}">系统总览 <span>01</span></a>
-            <a href="#resource-audit">资源审核 <span>02</span></a>
-            <a href="#user-admin">用户管理 <span>03</span></a>
-            <a href="#notice-admin">公告维护 <span>04</span></a>
-            <a href="#board-admin">资源池板块 <span>05</span></a>
+            <a class="{{ $backendSection === 'overview' ? 'active' : '' }}" href="{{ route('platform.backend.admin') }}">系统总览 <span>01</span></a>
+            <a class="{{ $backendSection === 'resources' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'resources']) }}">资源审核 <span>02</span></a>
+            <a class="{{ $backendSection === 'users' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'users']) }}">用户管理 <span>03</span></a>
+            <a class="{{ $backendSection === 'announcements' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'announcements']) }}">公告维护 <span>04</span></a>
+            <a class="{{ $backendSection === 'boards' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'boards']) }}">资源池板块 <span>05</span></a>
             <a href="{{ route('platform.admin.backup') }}">数据备份 <span>06</span></a>
         </nav>
+        <a class="backend-return" href="{{ route('platform.dashboard') }}">返回系统</a>
     </aside>
 
     <div class="backend-content">
+        @if($backendSection === 'overview')
         <section class="panel">
             <div class="badges">
                 <span class="badge gold">系统平台管理员</span>
@@ -65,7 +68,9 @@
                 </div>
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'resources')
         <section id="resource-audit" class="panel crud-panel">
             <div class="section-title">
                 <h2>资源审核与资源 CRUD</h2>
@@ -135,7 +140,9 @@
                 </table>
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'users')
         <section id="user-admin" class="panel crud-panel">
             <h2>系统用户 CRUD 管理</h2>
             <form class="panel" method="post" action="{{ route('platform.admin.users.store') }}">
@@ -196,7 +203,9 @@
                 </table>
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'announcements')
         <section id="notice-admin" class="grid grid-2 crud-panel">
             <form class="panel" method="post" action="{{ route('platform.announcements.store') }}">
                 @csrf
@@ -298,7 +307,9 @@
                 @endforeach
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'boards')
         <section id="board-admin" class="grid grid-2 crud-panel">
             <form class="panel" method="post" action="{{ route('platform.boards.store') }}">
                 @csrf
@@ -378,6 +389,7 @@
                 @endforeach
             </div>
         </section>
+        @endif
     </div>
 </section>
 @endsection

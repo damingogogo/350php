@@ -3,21 +3,25 @@
 @section('title', '学生后台 - 学联界高校教学资源共享平台')
 
 @section('content')
+@php($backendSection = $backendSection ?? 'overview')
 <section class="backend-shell">
     <aside class="backend-sidebar">
         <h2>学生后台</h2>
         <p>围绕学习资源、收藏下载、公告题库和资源池互动。</p>
         <nav class="backend-menu">
-            <a class="active" href="{{ route('platform.backend.student') }}">学习概览 <span>01</span></a>
-            <a href="{{ route('platform.resources') }}">资源检索 <span>02</span></a>
-            <a href="{{ route('platform.questions') }}">历年题目 <span>03</span></a>
-            <a href="{{ route('platform.boards') }}">共享资源池 <span>04</span></a>
-            <a href="{{ route('platform.announcements') }}">公告中心 <span>05</span></a>
-            <a href="{{ route('platform.dashboard') }}#profile">个人资料 <span>06</span></a>
+            <a class="{{ $backendSection === 'overview' ? 'active' : '' }}" href="{{ route('platform.backend.student') }}">学习概览 <span>01</span></a>
+            <a class="{{ $backendSection === 'resources' ? 'active' : '' }}" href="{{ route('platform.backend.student.section', ['section' => 'resources']) }}">资源检索 <span>02</span></a>
+            <a class="{{ $backendSection === 'questions' ? 'active' : '' }}" href="{{ route('platform.backend.student.section', ['section' => 'questions']) }}">历年题目 <span>03</span></a>
+            <a class="{{ $backendSection === 'boards' ? 'active' : '' }}" href="{{ route('platform.backend.student.section', ['section' => 'boards']) }}">共享资源池 <span>04</span></a>
+            <a class="{{ $backendSection === 'announcements' ? 'active' : '' }}" href="{{ route('platform.backend.student.section', ['section' => 'announcements']) }}">公告中心 <span>05</span></a>
+            <a class="{{ $backendSection === 'assignments' ? 'active' : '' }}" href="{{ route('platform.backend.student.section', ['section' => 'assignments']) }}">作业提交 <span>06</span></a>
+            <a href="{{ route('platform.profile') }}">个人资料 <span>07</span></a>
         </nav>
+        <a class="backend-return" href="{{ route('platform.dashboard') }}">返回系统</a>
     </aside>
 
     <div class="backend-content">
+        @if($backendSection === 'overview')
         <section class="panel">
             <div class="badges">
                 <span class="badge green">学生</span>
@@ -33,33 +37,37 @@
             <div class="metric-card"><span class="muted">下载记录</span><strong>{{ $stats['downloads'] }}</strong><small>已获取资源</small></div>
             <div class="metric-card"><span class="muted">题库数量</span><strong>{{ $stats['questions'] }}</strong><small>真题与模拟练习</small></div>
         </section>
+        @endif
 
-        <section class="grid grid-2">
-            <div class="panel">
-                <div class="section-title">
-                    <h2>推荐学习资源</h2>
-                    <a class="text-link" href="{{ route('platform.resources') }}">更多资源</a>
-                </div>
-                @include('platform.partials.resource-list', ['items' => $resources])
+        @if($backendSection === 'resources')
+        <section class="panel">
+            <div class="section-title">
+                <h2>推荐学习资源</h2>
+                <a class="text-link" href="{{ route('platform.resources') }}">更多资源</a>
             </div>
-            <div class="panel">
-                <div class="section-title">
-                    <h2>公告提醒</h2>
-                    <a class="text-link" href="{{ route('platform.announcements') }}">更多公告</a>
-                </div>
-                <div class="timeline">
-                    @forelse($announcements as $announcement)
-                        <a class="timeline-item" href="{{ route('platform.announcements.show', $announcement) }}">
-                            <strong>{{ $announcement->title }}</strong>
-                            <p class="small muted">{{ mb_strimwidth($announcement->content, 0, 88, '...') }}</p>
-                        </a>
-                    @empty
-                        <p class="muted">暂无公告。</p>
-                    @endforelse
-                </div>
+            @include('platform.partials.resource-list', ['items' => $resources])
+        </section>
+        @endif
+        @if($backendSection === 'announcements')
+        <section class="panel">
+            <div class="section-title">
+                <h2>公告提醒</h2>
+                <a class="text-link" href="{{ route('platform.announcements') }}">更多公告</a>
+            </div>
+            <div class="timeline">
+                @forelse($announcements as $announcement)
+                    <a class="timeline-item" href="{{ route('platform.announcements.show', $announcement) }}">
+                        <strong>{{ $announcement->title }}</strong>
+                        <p class="small muted">{{ mb_strimwidth($announcement->content, 0, 88, '...') }}</p>
+                    </a>
+                @empty
+                    <p class="muted">暂无公告。</p>
+                @endforelse
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'overview')
         <section class="grid grid-2">
             <div class="panel">
                 <h2>我的收藏</h2>
@@ -92,27 +100,31 @@
                 </div>
             </div>
         </section>
+        @endif
 
-        <section class="grid grid-2">
-            <div class="panel">
-                <div class="section-title">
-                    <h2>题目解析</h2>
-                    <a class="text-link" href="{{ route('platform.questions') }}">进入题库</a>
-                </div>
-                <div class="list">
-                    @forelse($questions as $question)
-                        <a class="list-row" href="{{ route('platform.questions.show', $question) }}">
-                            <div>
-                                <strong>{{ $question->subject_name }} · {{ $question->question_type }}</strong>
-                                <p class="small muted">{{ mb_strimwidth($question->question, 0, 88, '...') }}</p>
-                            </div>
-                            <span class="badge gold">{{ $question->difficulty }}</span>
-                        </a>
-                    @empty
-                        <p class="muted">暂无题目。</p>
-                    @endforelse
-                </div>
+        @if($backendSection === 'questions')
+        <section class="panel">
+            <div class="section-title">
+                <h2>题目解析</h2>
+                <a class="text-link" href="{{ route('platform.questions') }}">进入题库</a>
             </div>
+            <div class="list">
+                @forelse($questions as $question)
+                    <a class="list-row" href="{{ route('platform.questions.show', $question) }}">
+                        <div>
+                            <strong>{{ $question->subject_name }} · {{ $question->question_type }}</strong>
+                            <p class="small muted">{{ mb_strimwidth($question->question, 0, 88, '...') }}</p>
+                        </div>
+                        <span class="badge gold">{{ $question->difficulty }}</span>
+                    </a>
+                @empty
+                    <p class="muted">暂无题目。</p>
+                @endforelse
+            </div>
+        </section>
+        @endif
+        @if($backendSection === 'boards')
+        <section class="grid grid-2">
             <form class="panel crud-panel" method="post" action="{{ route('platform.posts.store') }}" enctype="multipart/form-data">
                 @csrf
                 <h2>资源池发帖</h2>
@@ -183,6 +195,43 @@
                 @endforelse
             </div>
         </section>
+        @endif
+
+        @if($backendSection === 'assignments')
+        <section class="grid grid-2">
+            <form class="panel crud-panel" method="post" action="{{ route('platform.homework.store') }}" enctype="multipart/form-data">
+                @csrf
+                <h2>作业提交</h2>
+                <div class="grid grid-2">
+                    <div><label>课程名称</label><input name="course_name" placeholder="例如：PHP Web开发"></div>
+                    <div><label>作业标题</label><input name="assignment_title" required placeholder="例如：第六周资源上传实验"></div>
+                </div>
+                <label class="section">作业说明</label>
+                <textarea name="content" placeholder="填写完成情况、遇到的问题或提交说明。"></textarea>
+                <label>作业附件</label>
+                <input name="attachment" type="file">
+                <button class="btn section" type="submit">提交作业</button>
+            </form>
+
+            <div class="panel">
+                <h2>我的提交记录</h2>
+                <div class="list">
+                    @forelse($homeworkSubmissions as $submission)
+                        <div class="list-row">
+                            <div>
+                                <strong>{{ $submission->assignment_title }}</strong>
+                                <p class="small muted">{{ $submission->course_name ?: '未填写课程' }} · {{ $submission->created_at }}</p>
+                                <p class="small muted">{{ mb_strimwidth($submission->content ?: '未填写说明', 0, 110, '...') }}</p>
+                            </div>
+                            <span class="badge green">已提交</span>
+                        </div>
+                    @empty
+                        <p class="muted">暂无作业提交记录。</p>
+                    @endforelse
+                </div>
+            </div>
+        </section>
+        @endif
     </div>
 </section>
 @endsection
