@@ -13,8 +13,9 @@
             <a class="{{ $backendSection === 'resources' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'resources']) }}">资源审核 <span>02</span></a>
             <a class="{{ $backendSection === 'users' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'users']) }}">用户管理 <span>03</span></a>
             <a class="{{ $backendSection === 'announcements' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'announcements']) }}">公告维护 <span>04</span></a>
-            <a class="{{ $backendSection === 'boards' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'boards']) }}">资源池板块 <span>05</span></a>
-            <a href="{{ route('platform.admin.backup') }}">数据备份 <span>06</span></a>
+            <a class="{{ $backendSection === 'questions' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'questions']) }}">题库管理 <span>05</span></a>
+            <a class="{{ $backendSection === 'boards' ? 'active' : '' }}" href="{{ route('platform.backend.admin.section', ['section' => 'boards']) }}">资源池板块 <span>06</span></a>
+            <a href="{{ route('platform.admin.backup') }}">数据备份 <span>07</span></a>
         </nav>
         <a class="backend-return" href="{{ route('platform.dashboard') }}">返回系统</a>
     </aside>
@@ -241,7 +242,7 @@
                 <h2>公告记录 / 编辑删除</h2>
                 <div class="grid">
                     @forelse($announcements as $announcement)
-                        <details class="mini-card">
+                        <details class="mini-card admin-collapsible">
                             <summary><strong>{{ $announcement->title }}</strong> <span>{{ $announcement->publisher_role === 'admin' ? '管理员公告' : '教师公告' }}</span></summary>
                             <form method="post" action="{{ route('platform.announcements.update', $announcement) }}" class="grid section">
                                 @csrf
@@ -267,7 +268,9 @@
                 </div>
             </div>
         </section>
+        @endif
 
+        @if($backendSection === 'questions')
         <section id="question-admin" class="panel crud-panel">
             <h2>题库 CRUD 管理</h2>
             <form method="post" action="{{ route('platform.questions.store') }}" class="panel">
@@ -286,7 +289,7 @@
             </form>
             <div class="grid">
                 @foreach($questions as $question)
-                    <details class="mini-card">
+                    <details class="mini-card admin-collapsible">
                         <summary><strong>{{ $question->subject_name }}</strong> <span>{{ $question->paper_name ?: $question->question_type }}</span></summary>
                         <form method="post" action="{{ route('platform.questions.update', $question) }}" class="grid section">
                             @csrf
@@ -327,9 +330,9 @@
                 <h2>现有板块 / 编辑删除</h2>
                 <div class="list">
                     @forelse($boards as $board)
-                        <div class="mini-card">
-                            <strong>{{ $board->name }}</strong>
-                            <p class="small muted">{{ $board->description }}</p>
+                        <details class="mini-card admin-collapsible">
+                            <summary><strong>{{ $board->name }}</strong> <span>{{ $board->code }}</span></summary>
+                            <p class="small muted section">{{ $board->description }}</p>
                             <form method="post" action="{{ route('platform.boards.update', $board) }}" class="grid">
                                 @csrf
                                 @method('PUT')
@@ -346,7 +349,7 @@
                                 @method('DELETE')
                                 <button class="btn danger" type="submit">删除板块</button>
                             </form>
-                        </div>
+                        </details>
                     @empty
                         <p class="muted">暂无板块。</p>
                     @endforelse
@@ -370,7 +373,7 @@
             </form>
             <div class="grid">
                 @foreach($posts as $post)
-                    <details class="mini-card">
+                    <details class="mini-card admin-collapsible">
                         <summary><strong>{{ $post->title }}</strong> <span>{{ optional($post->board)->name }} · {{ optional($post->user)->nickname }}</span></summary>
                         <form method="post" action="{{ route('platform.posts.update', $post) }}" enctype="multipart/form-data" class="grid section">
                             @csrf

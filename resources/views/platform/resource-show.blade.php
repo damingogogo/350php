@@ -85,7 +85,16 @@
                     <tr><th>格式</th><td>{{ $resource->file_type_label }}（{{ strtoupper($resource->file_ext ?: 'N/A') }}）</td></tr>
                     <tr><th>大小</th><td>{{ number_format(($resource->file_size ?: 0) / 1024 / 1024, 2) }} MB</td></tr>
                     <tr><th>共享范围</th><td>{{ $resource->share_scope_label }}</td></tr>
-                    <tr><th>可选格式</th><td data-source="fileTypeOptions">{{ implode(' / ', $fileTypeOptions) }}</td></tr>
+                    <tr>
+                        <th>可选格式</th>
+                        <td data-source="fileTypeOptions">
+                            <div class="format-options">
+                                @foreach($fileTypeOptions as $value => $label)
+                                    <a class="format-chip {{ $resource->file_type === $value ? 'active' : '' }}" href="{{ route('platform.resources', ['file_type' => $value]) }}">{{ $label }}</a>
+                                @endforeach
+                            </div>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </section>

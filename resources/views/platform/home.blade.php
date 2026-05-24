@@ -9,6 +9,38 @@
         <div class="login-copy">
             <h1>学联界高校教学资源共享平台</h1>
             <p class="lead">覆盖课堂预习课件、历年题目、音视频资料、文档模板和教师团队资源池，支持教师间共享、本班共享和全平台共享。</p>
+            <div class="hero-feature-board">
+                <div class="hero-mini-stats">
+                    <div class="hero-stat"><strong>25+</strong><span>课件、文档、音视频和案例资源</span></div>
+                    <div class="hero-stat"><strong>9类</strong><span>Word、PDF、PPT、音频、视频等格式</span></div>
+                    <div class="hero-stat"><strong>3种</strong><span>教师间、本班级、全平台共享范围</span></div>
+                    <div class="hero-stat"><strong>6项</strong><span>资源、题库、公告、作业、论坛、后台</span></div>
+                </div>
+                <div class="hero-feature-grid">
+                    <div class="hero-feature">
+                        <strong>资源格式分类清楚</strong>
+                        <span>教师发布时标明 Word、PDF、PPT、Excel、音频、视频、图片、压缩包等格式，学生按格式快速筛选。</span>
+                    </div>
+                    <div class="hero-feature">
+                        <strong>共享范围可控</strong>
+                        <span>支持教师之间共享、本班学生共享和全平台师生共享，资源可见范围跟随账号身份和班级自动匹配。</span>
+                    </div>
+                    <div class="hero-feature">
+                        <strong>题库与解析成体系</strong>
+                        <span>历年真题、模拟试卷和重点练习进入独立题库页面，详情中展示答案、解析、解题步骤和复习建议。</span>
+                    </div>
+                    <div class="hero-feature">
+                        <strong>三类用户后台分开</strong>
+                        <span>学生、教师、系统平台管理员分别进入对应后台，处理作业提交、资源发布、审核维护和数据备份。</span>
+                    </div>
+                </div>
+                <div class="hero-flow">
+                    <div class="flow-step"><strong>教师发布</strong><span>选择课程、格式、共享范围并上传真实文件</span></div>
+                    <div class="flow-step"><strong>管理员审核</strong><span>维护用户、公告、题库和资源池板块</span></div>
+                    <div class="flow-step"><strong>学生检索</strong><span>按关键词、分类、教师、格式和范围筛选下载</span></div>
+                    <div class="flow-step"><strong>互动反馈</strong><span>收藏、评分、评论、发帖和提交作业</span></div>
+                </div>
+            </div>
         </div>
         <div class="panel auth-panel">
             <h2>用户入口</h2>

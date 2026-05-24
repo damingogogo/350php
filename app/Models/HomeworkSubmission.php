@@ -11,6 +11,7 @@ class HomeworkSubmission extends Model
 
     protected $fillable = [
         'user_id',
+        'teacher_id',
         'course_name',
         'assignment_title',
         'content',
@@ -23,5 +24,10 @@ class HomeworkSubmission extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
     }
 }

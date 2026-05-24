@@ -356,13 +356,15 @@ class PlatformController extends Controller
                 ->latest()
                 ->take(8)
                 ->get(),
-            'homeworkSubmissions' => HomeworkSubmission::where('user_id', $user->id)
+            'homeworkSubmissions' => HomeworkSubmission::with('teacher')
+                ->where('user_id', $user->id)
                 ->latest()
                 ->take(12)
                 ->get(),
             'announcements' => $this->visibleAnnouncements($user)->latest()->take(6)->get(),
             'questions' => ExamQuestion::with('teacher')->latest()->take(6)->get(),
             'boards' => ForumBoard::withCount('posts')->orderBy('sort')->get(),
+            'teachers' => User::where('role', 'teacher')->orderBy('nickname')->get(),
             'stats' => [
                 'visible_resources' => (clone $resources)->count(),
                 'favorites' => Favorite::where('user_id', $user->id)->count(),
@@ -408,9 +410,23 @@ class PlatformController extends Controller
                 ->latest()
                 ->take(12)
                 ->get(),
-            'homeworkSubmissions' => HomeworkSubmission::with('user')
+            'homeworkSubmissions' => HomeworkSubmission::with(['user', 'teacher'])
+                ->where(function ($query) use ($user) {
+                    $query->where('teacher_id', $user->id)
+                        ->orWhereNull('teacher_id');
+                })
                 ->latest()
                 ->take(12)
+                ->get(),
+            'teacherFavorites' => Favorite::with(['resource.user', 'resource.category'])
+                ->where('user_id', $user->id)
+                ->latest()
+                ->take($section === 'history' ? 30 : 5)
+                ->get(),
+            'teacherDownloads' => Download::with(['resource.user', 'resource.category'])
+                ->where('user_id', $user->id)
+                ->latest()
+                ->take($section === 'history' ? 30 : 5)
                 ->get(),
             'boards' => ForumBoard::withCount('posts')->orderBy('sort')->get(),
             'categories' => Category::orderBy('sort')->get(),
@@ -442,7 +458,7 @@ class PlatformController extends Controller
             'announcements' => Announcement::with('publisher')->latest()->take(8)->get(),
             'questions' => ExamQuestion::with('teacher')->latest()->take(10)->get(),
             'posts' => ForumPost::with(['board', 'user'])->whereNull('parent_id')->latest()->take(12)->get(),
-            'homeworkSubmissions' => HomeworkSubmission::with('user')->latest()->take(12)->get(),
+            'homeworkSubmissions' => HomeworkSubmission::with(['user', 'teacher'])->latest()->take(12)->get(),
             'categoryStats' => Category::withCount('resources')->whereNull('parent_id')->orderBy('sort')->get(),
             'categories' => Category::orderBy('sort')->get(),
             'boards' => ForumBoard::withCount('posts')->orderBy('sort')->get(),
@@ -604,11 +620,16 @@ class PlatformController extends Controller
         abort_unless($user && $user->isStudent(), 403);
 
         $data = $request->validate([
+            'teacher_id' => 'required|exists:users,id',
             'course_name' => 'nullable|string|max:100',
             'assignment_title' => 'required|string|max:200',
             'content' => 'nullable|string|max:3000',
             'attachment' => 'nullable|file|max:204800',
         ]);
+
+        if (!User::where('id', $data['teacher_id'])->where('role', 'teacher')->exists()) {
+            return back()->with('error', '请选择要提交的教师')->withInput();
+        }
 
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');

@@ -3,15 +3,22 @@
 @section('title', '首页 - 学联界高校教学资源共享平台')
 
 @section('content')
-<section class="panel">
+<section class="panel page-hero">
     <div class="badges">
         <span class="badge green">已登录</span>
         <span class="badge">{{ auth()->user()->role === 'admin' ? '系统平台管理员' : (auth()->user()->role === 'teacher' ? '教师用户' : '学生用户') }}</span>
     </div>
-    <h1 class="section">高校教学资源统一发布、检索、共享与互动</h1>
+    <h1 class="section">教学资源共享总览</h1>
     <p class="lead">平台围绕课程资源、历年题目、共享资源池、公告通知和角色后台展开。教师可以按文件类型和共享范围发布资源，学生可按课程、教师、格式检索下载，管理员负责资源审核、用户维护和数据备份。</p>
 
-    <form class="toolbar section" method="get" action="{{ route('platform.resources') }}">
+    <div class="focus-strip">
+        <a class="focus-item" href="{{ route('platform.resources') }}"><strong>资源检索</strong><span>按课程、教师、文件格式和共享范围筛选课件、文档、音视频资源。</span></a>
+        <a class="focus-item" href="{{ route('platform.questions') }}"><strong>题目解析</strong><span>进入历年真题、模拟试卷、重点练习和答案解析。</span></a>
+        <a class="focus-item" href="{{ route('platform.boards') }}"><strong>共享资源池</strong><span>查看教师共建、学生互助和考试复习讨论内容。</span></a>
+        <a class="focus-item" href="{{ route('platform.backend') }}"><strong>角色后台</strong><span>学生提交作业，教师发布资源，管理员维护平台数据。</span></a>
+    </div>
+
+    <form class="toolbar hero-search" method="get" action="{{ route('platform.resources') }}">
         <div class="field">
             <label>关键词</label>
             <input name="keyword" placeholder="标题、课程、简介、标签">

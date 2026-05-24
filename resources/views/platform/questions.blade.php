@@ -3,10 +3,15 @@
 @section('title', '历年题目解析 - 学联界高校教学资源共享平台')
 
 @section('content')
-<section class="panel">
+<section class="panel page-hero">
+    <div class="badges">
+        <span class="badge gold">题库中心</span>
+        <span class="badge">历年真题</span>
+        <span class="badge green">答案解析</span>
+    </div>
     <h1>历年题目解析</h1>
     <p class="lead">按科目查看历年真题、模拟试卷、重点练习、答案和解析。</p>
-    <form class="toolbar section" method="get" action="{{ route('platform.questions') }}">
+    <form class="toolbar hero-search" method="get" action="{{ route('platform.questions') }}">
         <div class="field">
             <label>关键词</label>
             <input name="keyword" value="{{ $filters['keyword'] ?? '' }}" placeholder="科目、题型、题干">
@@ -26,7 +31,7 @@
 
 <section class="section grid grid-3">
     @forelse($questions as $question)
-        <a class="card project-card" href="{{ route('platform.questions.show', $question) }}">
+        <a class="card project-card question-card" href="{{ route('platform.questions.show', $question) }}">
             <div class="card-body">
                 <div class="badges">
                     <span class="badge">{{ $question->subject_name }}</span>

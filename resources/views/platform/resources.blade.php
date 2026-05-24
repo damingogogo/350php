@@ -3,9 +3,15 @@
 @section('title', '资源检索 - 学联界高校教学资源共享平台')
 
 @section('content')
-<section class="panel">
+<section class="panel page-hero">
+    <div class="badges">
+        <span class="badge green">资源中心</span>
+        <span class="badge">格式筛选</span>
+        <span class="badge gold">共享范围</span>
+    </div>
     <h1>资源检索</h1>
-    <form class="toolbar" method="get" action="{{ route('platform.resources') }}">
+    <p class="lead">按关键词、课程分类、文件格式、可见范围和上传教师组合筛选，快速找到当前账号可下载的学习资源。</p>
+    <form class="toolbar hero-search" method="get" action="{{ route('platform.resources') }}">
         <div class="field">
             <label>关键词</label>
             <input name="keyword" value="{{ $filters['keyword'] ?? '' }}" placeholder="标题、课程、简介、标签">
@@ -61,7 +67,7 @@
 
 <section class="section grid grid-3">
     @forelse($resources as $resource)
-        <article class="card">
+        <article class="card resource-card">
             <a href="{{ route('platform.resources.show', $resource) }}">
                 <div class="cover">{{ $resource->course_name ?: optional($resource->category)->name ?: '教学资源' }}</div>
             </a>

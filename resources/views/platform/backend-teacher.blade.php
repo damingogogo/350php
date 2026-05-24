@@ -15,6 +15,7 @@
             <a class="{{ $backendSection === 'resources' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'resources']) }}">我的资源 <span>04</span></a>
             <a class="{{ $backendSection === 'posts' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'posts']) }}">共享资源池 <span>05</span></a>
             <a class="{{ $backendSection === 'homework' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'homework']) }}">作业查看 <span>06</span></a>
+            <a class="{{ $backendSection === 'history' ? 'active' : '' }}" href="{{ route('platform.backend.teacher.section', ['section' => 'history']) }}">学习记录 <span>07</span></a>
         </nav>
         <a class="backend-return" href="{{ route('platform.dashboard') }}">返回系统</a>
     </aside>
@@ -36,6 +37,51 @@
             <div class="metric-card"><span class="muted">资源下载</span><strong>{{ $stats['downloads'] }}</strong><small>学生使用情况</small></div>
             <div class="metric-card"><span class="muted">评论反馈</span><strong>{{ $stats['comments'] }}</strong><small>课堂互动沉淀</small></div>
             <div class="metric-card"><span class="muted">题目数量</span><strong>{{ $stats['questions'] }}</strong><small>真题、模拟与重点练习</small></div>
+        </section>
+
+        <section class="grid grid-2">
+            <div class="panel">
+                <div class="section-title">
+                    <h2>教师收藏资源</h2>
+                    <a class="text-link" href="{{ route('platform.backend.teacher.section', ['section' => 'history']) }}">更多</a>
+                </div>
+                <div class="list" data-source="teacherFavorites">
+                    @forelse($teacherFavorites as $favorite)
+                        @if($favorite->resource)
+                            <a class="list-row" href="{{ route('platform.resources.show', $favorite->resource) }}">
+                                <div>
+                                    <strong>{{ $favorite->resource->title }}</strong>
+                                    <p class="small muted">{{ $favorite->resource->course_name ?: optional($favorite->resource->category)->name }} · {{ $favorite->resource->file_type_label }}</p>
+                                </div>
+                                <span class="badge green">收藏</span>
+                            </a>
+                        @endif
+                    @empty
+                        <p class="muted">暂无收藏资源，可在资源详情页点击收藏。</p>
+                    @endforelse
+                </div>
+            </div>
+            <div class="panel">
+                <div class="section-title">
+                    <h2>教师下载资源</h2>
+                    <a class="text-link" href="{{ route('platform.backend.teacher.section', ['section' => 'history']) }}">更多</a>
+                </div>
+                <div class="list" data-source="teacherDownloads">
+                    @forelse($teacherDownloads as $download)
+                        @if($download->resource)
+                            <a class="list-row" href="{{ route('platform.resources.show', $download->resource) }}">
+                                <div>
+                                    <strong>{{ $download->resource->title }}</strong>
+                                    <p class="small muted">{{ $download->resource->course_name ?: optional($download->resource->category)->name }} · {{ $download->resource->file_type_label }}</p>
+                                </div>
+                                <span class="small muted">{{ $download->created_at->format('m-d H:i') }}</span>
+                            </a>
+                        @endif
+                    @empty
+                        <p class="muted">暂无下载记录，进入资源检索下载后会在这里显示。</p>
+                    @endforelse
+                </div>
+            </div>
         </section>
         @endif
 
@@ -238,11 +284,12 @@
             <h2>学生作业提交记录</h2>
             <div class="table-wrap">
                 <table>
-                    <thead><tr><th>学生</th><th>作业</th><th>内容</th><th>附件</th><th>时间</th></tr></thead>
+                    <thead><tr><th>学生</th><th>提交教师</th><th>作业</th><th>内容</th><th>附件</th><th>时间</th></tr></thead>
                     <tbody>
                     @forelse($homeworkSubmissions as $submission)
                         <tr>
                             <td>{{ optional($submission->user)->nickname ?: optional($submission->user)->username ?: '学生' }}</td>
+                            <td>{{ optional($submission->teacher)->nickname ?: optional($submission->teacher)->username ?: '未指定' }}</td>
                             <td>{{ $submission->assignment_title }}<p class="small muted">{{ $submission->course_name ?: '未填写课程' }}</p></td>
                             <td>{{ mb_strimwidth($submission->content ?: '未填写说明', 0, 100, '...') }}</td>
                             <td>
@@ -255,10 +302,57 @@
                             <td>{{ $submission->created_at }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="5">暂无学生作业提交。</td></tr>
+                        <tr><td colspan="6">暂无学生作业提交。</td></tr>
                     @endforelse
                     </tbody>
                 </table>
+            </div>
+        </section>
+        @endif
+
+        @if($backendSection === 'history')
+        <section class="grid grid-2">
+            <div class="panel">
+                <div class="section-title">
+                    <h2>全部收藏资源</h2>
+                    <a class="text-link" href="{{ route('platform.resources') }}">继续检索</a>
+                </div>
+                <div class="list" data-source="teacherFavorites">
+                    @forelse($teacherFavorites as $favorite)
+                        @if($favorite->resource)
+                            <a class="list-row" href="{{ route('platform.resources.show', $favorite->resource) }}">
+                                <div>
+                                    <strong>{{ $favorite->resource->title }}</strong>
+                                    <p class="small muted">{{ $favorite->resource->course_name ?: optional($favorite->resource->category)->name }} · {{ optional($favorite->resource->user)->nickname ?: optional($favorite->resource->user)->username }} · {{ $favorite->resource->file_type_label }}</p>
+                                </div>
+                                <span class="badge green">收藏</span>
+                            </a>
+                        @endif
+                    @empty
+                        <p class="muted">暂无收藏资源。</p>
+                    @endforelse
+                </div>
+            </div>
+            <div class="panel">
+                <div class="section-title">
+                    <h2>全部下载资源</h2>
+                    <a class="text-link" href="{{ route('platform.resources') }}">继续下载</a>
+                </div>
+                <div class="list" data-source="teacherDownloads">
+                    @forelse($teacherDownloads as $download)
+                        @if($download->resource)
+                            <a class="list-row" href="{{ route('platform.resources.show', $download->resource) }}">
+                                <div>
+                                    <strong>{{ $download->resource->title }}</strong>
+                                    <p class="small muted">{{ $download->resource->course_name ?: optional($download->resource->category)->name }} · {{ optional($download->resource->user)->nickname ?: optional($download->resource->user)->username }} · {{ $download->resource->file_type_label }}</p>
+                                </div>
+                                <span class="small muted">{{ $download->created_at->format('Y-m-d H:i') }}</span>
+                            </a>
+                        @endif
+                    @empty
+                        <p class="muted">暂无下载记录。</p>
+                    @endforelse
+                </div>
             </div>
         </section>
         @endif

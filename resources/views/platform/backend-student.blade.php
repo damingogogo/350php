@@ -155,6 +155,24 @@
                 <input name="attachment" type="file">
                 <button class="btn section" type="submit">发布帖子</button>
             </form>
+
+            <aside class="panel student-board-helper">
+                <h2>资源池互动说明</h2>
+                <p class="small muted">发帖时尽量写清课程、资源名称、遇到的问题和已经尝试过的方法，老师或同学进入帖子后才能更快定位问题。</p>
+                <ul class="helper-list">
+                    <li><strong>课程共建资源池：</strong>查看教师发布的课件、案例和参考资料讨论。</li>
+                    <li><strong>学生学习互助：</strong>发布下载、复习、作业和实验运行问题。</li>
+                    <li><strong>考试复习专区：</strong>集中整理历年题目、模拟卷和重点解析。</li>
+                </ul>
+                <div class="grid section">
+                    @foreach($boards as $board)
+                        <a class="list-row" href="{{ route('platform.boards.show', $board) }}">
+                            <span>{{ $board->name }}</span>
+                            <span class="badge">{{ $board->posts_count }} 条</span>
+                        </a>
+                    @endforeach
+                </div>
+            </aside>
         </section>
 
         <section id="student-post-crud" class="panel crud-panel">
@@ -203,6 +221,15 @@
                 @csrf
                 <h2>作业提交</h2>
                 <div class="grid grid-2">
+                    <div>
+                        <label>提交老师</label>
+                        <select name="teacher_id" required>
+                            <option value="">请选择提交给哪位老师</option>
+                            @foreach($teachers as $teacher)
+                                <option value="{{ $teacher->id }}">{{ $teacher->nickname ?: $teacher->username }}{{ $teacher->title ? ' · ' . $teacher->title : '' }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div><label>课程名称</label><input name="course_name" placeholder="例如：PHP Web开发"></div>
                     <div><label>作业标题</label><input name="assignment_title" required placeholder="例如：第六周资源上传实验"></div>
                 </div>
@@ -220,7 +247,7 @@
                         <div class="list-row">
                             <div>
                                 <strong>{{ $submission->assignment_title }}</strong>
-                                <p class="small muted">{{ $submission->course_name ?: '未填写课程' }} · {{ $submission->created_at }}</p>
+                                <p class="small muted">提交给：{{ optional($submission->teacher)->nickname ?: optional($submission->teacher)->username ?: '未指定教师' }} · {{ $submission->course_name ?: '未填写课程' }} · {{ $submission->created_at }}</p>
                                 <p class="small muted">{{ mb_strimwidth($submission->content ?: '未填写说明', 0, 110, '...') }}</p>
                             </div>
                             <span class="badge green">已提交</span>

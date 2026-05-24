@@ -10,6 +10,7 @@ use App\Models\ExamQuestion;
 use App\Models\Favorite;
 use App\Models\ForumBoard;
 use App\Models\ForumPost;
+use App\Models\HomeworkSubmission;
 use App\Models\Rating;
 use App\Models\Resource;
 use App\Models\User;
@@ -805,6 +806,50 @@ class DatabaseSeeder extends Seeder
                 ['ip' => '127.0.0.1']
             );
         }
+
+        $teacherLearningSeedPairs = [
+            [$teacher1, 'MySQL 数据库设计规范'],
+            [$teacher1, '数据结构课堂案例代码'],
+            [$teacher1, '课程设计验收答辩问题清单'],
+            [$teacher2, 'PHP Web 开发预习课件'],
+            [$teacher2, '软件项目案例说明书'],
+            [$teacher3, 'PHP 表单验证与文件上传案例'],
+            [$teacher3, '高等数学期末复习提纲'],
+        ];
+
+        foreach ($teacherLearningSeedPairs as [$teacher, $resourceTitle]) {
+            $resource = Resource::where('title', $resourceTitle)->first();
+
+            if (!$resource) {
+                continue;
+            }
+
+            Favorite::firstOrCreate(['user_id' => $teacher->id, 'resource_id' => $resource->id]);
+            Download::firstOrCreate(
+                ['user_id' => $teacher->id, 'resource_id' => $resource->id],
+                ['ip' => '127.0.0.1']
+            );
+        }
+
+        HomeworkSubmission::firstOrCreate(
+            ['user_id' => $student1->id, 'assignment_title' => '第六周资源上传实验'],
+            [
+                'teacher_id' => $teacher1->id,
+                'course_name' => 'PHP Web开发',
+                'content' => '已完成资源上传、文件类型校验和下载测试，提交说明中记录了本班共享资源的权限验证过程。',
+                'status' => 'submitted',
+            ]
+        );
+
+        HomeworkSubmission::firstOrCreate(
+            ['user_id' => $student2->id, 'assignment_title' => '数据库课程设计表结构检查'],
+            [
+                'teacher_id' => $teacher2->id,
+                'course_name' => '数据库原理',
+                'content' => '已按照检查表补充主键、外键和索引说明，提交前还需要老师确认字段命名是否规范。',
+                'status' => 'submitted',
+            ]
+        );
     }
 
     private function ensureSampleResourceFiles(array $resourceRows): void
