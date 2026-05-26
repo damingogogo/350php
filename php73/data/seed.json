@@ -1,0 +1,80 @@
+{
+  "users": [
+    {"id":1,"username":"admin","password":"123456","nickname":"管理员","email":"admin@example.com","role":"admin","school":"学联界高校","department":"平台管理中心","class_name":"","title":"系统平台管理员","major":"","phone":"13800000000","bio":"负责用户维护、资源审核、公告发布、题库管理和数据备份。"},
+    {"id":2,"username":"teacher1","password":"123456","nickname":"张老师","email":"teacher1@example.com","role":"teacher","school":"学联界高校","department":"人工智能学院","class_name":"2022计科6班","title":"讲师","major":"","phone":"13800000001","bio":"负责 PHP Web 开发、数据库课程和综合项目实训。"},
+    {"id":3,"username":"teacher2","password":"123456","nickname":"李老师","email":"teacher2@example.com","role":"teacher","school":"学联界高校","department":"人工智能学院","class_name":"2022计科6班","title":"副教授","major":"","phone":"13800000002","bio":"负责数据结构、算法分析和课程设计指导。"},
+    {"id":4,"username":"teacher3","password":"123456","nickname":"王老师","email":"teacher3@example.com","role":"teacher","school":"学联界高校","department":"公共基础学院","class_name":"2022计科5班","title":"讲师","major":"","phone":"13800000003","bio":"负责大学英语、公共基础课和考试复习资源建设。"},
+    {"id":5,"username":"student1","password":"123456","nickname":"白同学","email":"student1@example.com","role":"student","school":"学联界高校","department":"人工智能学院","class_name":"2022计科6班","title":"","major":"计算机科学与技术","phone":"13800000004","bio":"关注 PHP Web、数据库课程和历年题复习。"},
+    {"id":6,"username":"student2","password":"123456","nickname":"王同学","email":"student2@example.com","role":"student","school":"学联界高校","department":"人工智能学院","class_name":"2022计科5班","title":"","major":"软件工程","phone":"13800000005","bio":"关注公共基础课、英语四级和项目实践资料。"}
+  ],
+  "categories": [
+    {"id":1,"name":"程序设计","description":"PHP、Java、Python、前端开发等课程资源","sort":1},
+    {"id":2,"name":"数据库技术","description":"MySQL、SQL 训练、数据库课程设计资料","sort":2},
+    {"id":3,"name":"算法与数据结构","description":"算法分析、数据结构课件与题解","sort":3},
+    {"id":4,"name":"公共基础课","description":"高等数学、大学英语、物理实验等资料","sort":4},
+    {"id":5,"name":"历年题库","description":"真题、模拟题、重点练习和解析","sort":5},
+    {"id":6,"name":"教学案例库","description":"课堂案例、代码片段和补充材料","sort":6}
+  ],
+  "resources": [
+    {"id":1,"title":"PHP Web 登录注册模块教学设计","description":"包含登录、注册、角色权限、Session 校验和表单验证流程，适合课堂预习和项目实训。","course_name":"PHP Web开发","category_id":1,"user_id":2,"type":"document","file_type":"word","file_ext":"docx","file_name":"report-template.docx","file_path":"report-template.docx","file_size":36616,"share_scope":"platform","class_name":"","preview_note":"先阅读模块流程，再完成登录页面和后台入口的流程图。","download_count":86,"view_count":420,"rating":4.8,"rating_count":28,"status":"approved","is_featured":1,"tags":"PHP,登录注册,Word"},
+    {"id":2,"title":"PHP Web 预习课件","description":"梳理 PHP 基础语法、页面跳转、表单提交、文件上传和 MVC 分层思想。","course_name":"PHP Web开发","category_id":1,"user_id":2,"type":"document","file_type":"ppt","file_ext":"pptx","file_name":"php-web-preview.pptx","file_path":"php-web-preview.pptx","file_size":29107,"share_scope":"class","class_name":"2022计科6班","preview_note":"课前完成第 1-3 页问题，课堂用于分组讨论。","download_count":114,"view_count":576,"rating":4.6,"rating_count":30,"status":"approved","is_featured":1,"tags":"PHP,PPT,预习"},
+    {"id":3,"title":"MySQL 数据库设计规范","description":"整理数据库表设计、字段命名、外键关系、索引设计和课程设计常见错误。","course_name":"数据库原理","category_id":2,"user_id":3,"type":"document","file_type":"pdf","file_ext":"pdf","file_name":"mysql-design.pdf","file_path":"mysql-design.pdf","file_size":619,"share_scope":"platform","class_name":"","preview_note":"可作为课程设计数据库部分的检查清单。","download_count":152,"view_count":801,"rating":4.7,"rating_count":34,"status":"approved","is_featured":1,"tags":"MySQL,PDF,课程设计"},
+    {"id":4,"title":"数据结构课堂案例代码","description":"链表、栈、队列、树结构课堂案例代码包，附带实验任务说明。","course_name":"数据结构","category_id":3,"user_id":3,"type":"document","file_type":"archive","file_ext":"zip","file_name":"data-structure-cases.zip","file_path":"data-structure-cases.zip","file_size":359,"share_scope":"teachers","class_name":"","preview_note":"供同课程教师备课和统一案例素材使用。","download_count":39,"view_count":198,"rating":4.2,"rating_count":11,"status":"approved","is_featured":0,"tags":"数据结构,代码,教师共享"},
+    {"id":5,"title":"大学英语四级听力训练","description":"包含四级听力训练音频和课堂听写任务，适合学生碎片化复习。","course_name":"大学英语","category_id":4,"user_id":4,"type":"audio","file_type":"audio","file_ext":"mp3","file_name":"cet-listening.mp3","file_path":"cet-listening.mp3","file_size":4386,"share_scope":"platform","class_name":"","preview_note":"建议每天完成一个听写片段并记录生词。","download_count":145,"view_count":711,"rating":4.7,"rating_count":26,"status":"approved","is_featured":1,"tags":"英语,音频,四级"},
+    {"id":6,"title":"Web 项目部署演示视频","description":"从本地开发到服务器部署的完整演示，包含环境配置和常见错误处理。","course_name":"综合项目实训","category_id":6,"user_id":2,"type":"video","file_type":"video","file_ext":"mp4","file_name":"web-deploy.mp4","file_path":"web-deploy.mp4","file_size":2417,"share_scope":"class","class_name":"2022计科6班","preview_note":"观看后整理部署步骤截图并提交作业。","download_count":67,"view_count":352,"rating":4.3,"rating_count":16,"status":"approved","is_featured":1,"tags":"部署,视频,实训"},
+    {"id":7,"title":"高等数学期末复习提纲","description":"按函数、极限、导数、积分和应用题整理期末复习提纲。","course_name":"高等数学","category_id":4,"user_id":4,"type":"document","file_type":"word","file_ext":"docx","file_name":"report-template.docx","file_path":"report-template.docx","file_size":36616,"share_scope":"platform","class_name":"","preview_note":"建议按章节做错题归类，并标记公式使用条件。","download_count":101,"view_count":538,"rating":4.5,"rating_count":18,"status":"approved","is_featured":0,"tags":"高数,复习,Word"},
+    {"id":8,"title":"软件项目案例说明书","description":"展示教学资源平台、学生信息管理、在线题库等项目案例的需求分析和模块划分。","course_name":"综合项目实训","category_id":6,"user_id":2,"type":"document","file_type":"pdf","file_ext":"pdf","file_name":"mysql-design.pdf","file_path":"mysql-design.pdf","file_size":619,"share_scope":"teachers","class_name":"","preview_note":"教师可从案例中选择一个作为课程设计分组项目。","download_count":58,"view_count":301,"rating":4.4,"rating_count":12,"status":"approved","is_featured":0,"tags":"案例,PDF,课程设计"},
+    {"id":9,"title":"数据库课程设计答辩清单","description":"列出 ER 图、数据字典、SQL 脚本、功能截图和答辩问题准备事项。","course_name":"数据库原理","category_id":2,"user_id":3,"type":"document","file_type":"excel","file_ext":"xlsx","file_name":"data-structure-cases.zip","file_path":"data-structure-cases.zip","file_size":359,"share_scope":"class","class_name":"2022计科6班","preview_note":"答辩前逐项检查并提交小组负责人确认。","download_count":73,"view_count":294,"rating":4.1,"rating_count":9,"status":"approved","is_featured":0,"tags":"数据库,答辩,Excel"},
+    {"id":10,"title":"历年 PHP Web 真题解析包","description":"整理 PHP Web 开发历年考试题、模拟题和重点解析。","course_name":"PHP Web开发","category_id":5,"user_id":2,"type":"document","file_type":"pdf","file_ext":"pdf","file_name":"mysql-design.pdf","file_path":"mysql-design.pdf","file_size":619,"share_scope":"platform","class_name":"","preview_note":"先独立完成题目，再对照解析整理错题。","download_count":188,"view_count":932,"rating":4.9,"rating_count":42,"status":"approved","is_featured":1,"tags":"历年题,PHP,解析"},
+    {"id":11,"title":"算法复杂度专题课件","description":"用图示和例题说明时间复杂度、空间复杂度和常见排序算法比较。","course_name":"算法分析","category_id":3,"user_id":3,"type":"document","file_type":"ppt","file_ext":"pptx","file_name":"php-web-preview.pptx","file_path":"php-web-preview.pptx","file_size":29107,"share_scope":"platform","class_name":"","preview_note":"重点理解 O(n)、O(log n)、O(nlogn) 的适用场景。","download_count":94,"view_count":488,"rating":4.6,"rating_count":20,"status":"approved","is_featured":0,"tags":"算法,PPT,复杂度"},
+    {"id":12,"title":"课程资源上传说明视频","description":"演示教师如何选择文件类型、共享范围、班级范围和资源标签。","course_name":"平台使用说明","category_id":6,"user_id":1,"type":"video","file_type":"video","file_ext":"mp4","file_name":"web-deploy.mp4","file_path":"web-deploy.mp4","file_size":2417,"share_scope":"platform","class_name":"","preview_note":"上传资源时必须标明 Word、PDF、音频或视频等文件类型。","download_count":44,"view_count":260,"rating":4.3,"rating_count":8,"status":"approved","is_featured":0,"tags":"平台说明,视频,上传"}
+  ],
+  "announcements": [
+    {"id":1,"title":"平台资源审核与下载说明","content":"所有教师上传的资源需要标明文件格式、课程名称、共享范围和适用班级。学生下载前请先进入详情页查看学习目标、资源目录和教师说明。","publisher_id":1,"publisher_role":"admin","target_role":"all","status":"published","created_at":"2026-05-21 21:18:59"},
+    {"id":2,"title":"系统平台管理员数据备份提醒","content":"管理员后台已提供用户、资源、公告、题库、资源池、评论、收藏、下载和评分等核心数据导出功能。建议在课程验收前导出一次备份。","publisher_id":1,"publisher_role":"admin","target_role":"admin","status":"published","created_at":"2026-05-21 21:18:59"},
+    {"id":3,"title":"平台资源发布规范","content":"教师发布资源时请填写课程名称、文件格式和共享范围，避免学生获取到错误版本。","publisher_id":1,"publisher_role":"admin","target_role":"teacher","status":"published","created_at":"2026-05-21 19:13:10"},
+    {"id":4,"title":"数据库课程设计资料更新","content":"数据库课程设计新增 SQL 查询训练题、答辩问题清单和数据库检查表，请同学们按表结构、外键约束、索引设计和测试数据四个模块复习。","publisher_id":3,"publisher_role":"teacher","target_role":"student","status":"published","created_at":"2026-05-22 08:30:00"},
+    {"id":5,"title":"大学英语四级复习资源包说明","content":"四级复习资源已补充听力训练、阅读技巧课件、写作模板与范文。建议按听力、阅读、写作三个模块分阶段完成练习。","publisher_id":4,"publisher_role":"teacher","target_role":"student","status":"published","created_at":"2026-05-22 09:10:00"}
+  ],
+  "questions": [
+    {"id":1,"subject_name":"PHP Web开发","paper_name":"2026模拟卷","question_type":"模拟试卷","question":"如何在教学资源平台中实现教师、学生和管理员三类用户的权限区分？","answer":"可在用户表中设置 role 字段，登录后根据角色跳转到对应后台，并在每个功能入口进行权限判断。","analysis":"本题考查角色权限设计。回答时应说明数据字段、登录流程、后台菜单和服务端校验。","difficulty":"★★★","teacher_id":2},
+    {"id":2,"subject_name":"数据库原理","paper_name":"重点练习","question_type":"重点练习","question":"资源表为什么需要同时保存 file_type、file_ext 和 file_path？","answer":"file_type 用于业务分类筛选，file_ext 用于识别真实扩展名，file_path 用于定位服务器文件。","analysis":"三者作用不同，分别服务于检索、展示和下载。","difficulty":"★★","teacher_id":3},
+    {"id":3,"subject_name":"数据结构","paper_name":"模拟试卷","question_type":"模拟试卷","question":"顺序表和链表在插入、删除、随机访问上的时间复杂度有什么区别？","answer":"顺序表随机访问 O(1)，插入删除通常 O(n)；链表随机访问 O(n)，已知位置插入删除 O(1)。","analysis":"需要结合存储结构说明原因。","difficulty":"★★","teacher_id":3},
+    {"id":4,"subject_name":"高等数学","paper_name":"历年真题","question_type":"历年真题","question":"求导数应用题时，如何判断极值点和拐点？","answer":"极值点通常看一阶导数变号，拐点通常看二阶导数变号，并结合定义域判断。","analysis":"注意不可只看导数为零，还要验证符号变化。","difficulty":"★★","teacher_id":4},
+    {"id":5,"subject_name":"大学英语","paper_name":"重点练习","question_type":"重点练习","question":"写作开头段如何做到观点明确且不过度模板化？","answer":"先改写题目背景，再直接提出中心观点，避免堆砌万能句。","analysis":"重点是逻辑清晰和关键词替换。","difficulty":"★","teacher_id":4},
+    {"id":6,"subject_name":"PHP Web开发","paper_name":"历年真题","question_type":"历年真题","question":"上传资源时为什么要校验文件类型和文件大小？","answer":"为了保证资源安全、下载可用和页面分类准确，避免上传危险文件或损坏文件。","analysis":"可从安全性、可维护性和用户体验三个角度说明。","difficulty":"★★","teacher_id":2}
+  ],
+  "boards": [
+    {"id":1,"code":"course-share","name":"课程共建资源池","description":"同课程教师共享课件、案例、代码和参考资料。","sort":1},
+    {"id":2,"code":"student-help","name":"学生学习互助","description":"学生围绕资源下载、复习资料和作业问题进行交流。","sort":2},
+    {"id":3,"code":"exam-review","name":"考试复习专区","description":"整理历年题目、模拟试卷和重点解析。","sort":3},
+    {"id":4,"code":"project-case","name":"项目案例讨论","description":"围绕课程设计、项目部署和答辩材料开展讨论。","sort":4}
+  ],
+  "posts": [
+    {"id":1,"board_id":1,"user_id":2,"parent_id":0,"title":"PHP 文件上传实验运行报错求助","content":"请大家在回复中写清楚课程、问题现象、已经尝试的方法，方便老师和同学定位问题。","post_type":"normal","view_count":88,"created_at":"2026-05-22 10:00:00"},
+    {"id":2,"board_id":1,"user_id":3,"parent_id":0,"title":"数据库课程设计资料补充","content":"已补充 SQL 查询练习、数据字典模板和答辩问题清单，同学们可以结合资源详情页下载。","post_type":"resource","view_count":65,"created_at":"2026-05-22 11:00:00"},
+    {"id":3,"board_id":2,"user_id":5,"parent_id":0,"title":"PHP Web 登录模块如何保存登录状态？","content":"我已经完成登录表单，但刷新页面后状态丢失，想请教 Session 的使用方式。","post_type":"question","view_count":49,"created_at":"2026-05-22 12:00:00"},
+    {"id":4,"board_id":3,"user_id":4,"parent_id":0,"title":"四级听力训练打卡规则","content":"每位同学每周完成两段听写，提交错词整理和听力反思。","post_type":"notice","view_count":42,"created_at":"2026-05-22 13:00:00"},
+    {"id":5,"board_id":4,"user_id":2,"parent_id":0,"title":"课程设计答辩材料清单","content":"建议包括需求说明、数据库设计、核心代码、运行截图、测试用例和部署说明。","post_type":"normal","view_count":73,"created_at":"2026-05-22 14:00:00"},
+    {"id":6,"board_id":3,"user_id":5,"parent_id":0,"title":"PHP Web 历年题错题整理","content":"把登录、文件上传、资源权限、后台管理四类题目整理到同一个文档里，便于期末复习。","post_type":"resource","view_count":35,"created_at":"2026-05-22 15:00:00"}
+  ],
+  "favorites": [
+    {"id":1,"user_id":5,"resource_id":1,"created_at":"2026-05-23 09:00:00"},
+    {"id":2,"user_id":5,"resource_id":3,"created_at":"2026-05-23 09:10:00"},
+    {"id":3,"user_id":2,"resource_id":4,"created_at":"2026-05-23 10:00:00"},
+    {"id":4,"user_id":2,"resource_id":10,"created_at":"2026-05-23 10:20:00"}
+  ],
+  "downloads": [
+    {"id":1,"user_id":5,"resource_id":1,"created_at":"2026-05-23 11:00:00"},
+    {"id":2,"user_id":5,"resource_id":3,"created_at":"2026-05-23 11:05:00"},
+    {"id":3,"user_id":2,"resource_id":10,"created_at":"2026-05-23 11:20:00"},
+    {"id":4,"user_id":2,"resource_id":5,"created_at":"2026-05-23 11:40:00"}
+  ],
+  "homework_submissions": [
+    {"id":1,"student_id":5,"teacher_id":2,"course_name":"PHP Web开发","assignment_title":"第六周资源上传实验","content":"已完成文件上传和类型选择，提交运行截图。","file_name":"","file_path":"","created_at":"2026-05-23 16:00:00"}
+  ],
+  "comments": [
+    {"id":1,"resource_id":1,"user_id":5,"content":"课件说明很详细，登录流程图对完成实验很有帮助。","created_at":"2026-05-23 18:00:00"},
+    {"id":2,"resource_id":3,"user_id":2,"content":"数据库规范可以直接用于课程设计检查。","created_at":"2026-05-23 18:30:00"}
+  ]
+}
