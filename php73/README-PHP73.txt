@@ -8,6 +8,15 @@ PHP 7.3.4 普通 PHP 运行说明
 3. 浏览器访问：
    http://localhost/php73/
 
+如果客户要求目录名称必须是 public，可以把 php73 文件夹改名为 public：
+   D:\phpstudy_pro\WWW\public
+
+然后访问：
+   http://localhost/public/
+
+注意：普通 PHP 7.3.4 版本不需要访问 http://localhost/public/public/。
+这个地址是 Laravel 版本的访问方式，普通版入口就在文件夹根目录 index.php。
+
 4. 默认演示账号：
    管理员：admin / 123456
    教师：teacher1 / 123456
